@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { POST } from 'src/app/models';
 
 @Component({
   selector: 'app-post-create',
@@ -7,7 +8,7 @@ import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/cor
 })
 export class PostCreateComponent implements OnInit {
 
-  @Output() onSavePost = new EventEmitter<any>();
+  @Output() onSavePost = new EventEmitter<POST>();
   newTitle = '';
   newContent = '';
 
@@ -22,7 +23,7 @@ export class PostCreateComponent implements OnInit {
     if (this.newTitle.length > 3 && this.newContent.length > 0) {
       this.onSavePost.emit({ title: this.newTitle, content: this.newContent });
     } else {
-      this.onSavePost.emit(false);
+      this.onSavePost.emit(null);
     }
     this.newTitle = '';
     this.newContent = '';

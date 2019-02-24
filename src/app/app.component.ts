@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 
+import { POST } from './models';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -7,9 +9,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 
-  posts: { title: string, content: string }[] = []
+  posts: POST[] = []
 
-  onSavePost(post) {
-    if (post) {    this.posts.push(post);  }
+  onSavePost(post: POST) {
+    if (post) {  this.posts.push(post);  }
   }
 }
