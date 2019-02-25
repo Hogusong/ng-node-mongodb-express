@@ -9,7 +9,6 @@ import { POST } from '../models';
 })
 export class PostService {
 
-  private id: number;
   private posts: POST[] = [];
   private updatedPosts = new Subject<POST[]>();
 
@@ -20,7 +19,6 @@ export class PostService {
       .get<{message: string, posts: POST[]}>('http://localhost:3000/api/posts')
       .subscribe((data) => {
         this.posts = data.posts;
-        this.id = this.posts.length + 1;
         this.updatedPosts.next([...this.posts]);
     });
   }
@@ -30,13 +28,11 @@ export class PostService {
   }
 
   addPost(post: POST) {
-    post.id = '' + this.id;
     this.http
       .post<{ message: string }>('http://localhost:3000/api/post', post)
       .subscribe(data => {
         console.log(data.message);
         this.posts.push(post);
-        this.id++
         this.updatedPosts.next(this.posts);
     });
   }
