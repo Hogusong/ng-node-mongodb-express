@@ -6,3 +6,7 @@
 .info-text {
   text-align: center
 }
+
+button i {
+  margin-right: 5px;
+}

@@ -19,9 +19,10 @@ export class PostCreateComponent {
     if (this.ngForm.invalid) {  return  }
     const newTitle = this.ngForm.value.title.trim();
     const newContent = this.ngForm.value.content.trim();
-    if (newTitle.length > 3 && newContent.length > 0) {
+    if (newTitle.length > 2 && newContent.length > 0) {
       const post: POST = { title: newTitle, content: newContent };
       this.postService.addPost(post);
+      this.ngForm.resetForm();
     }
   }
 }
