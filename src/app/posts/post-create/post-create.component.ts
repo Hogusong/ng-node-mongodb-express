@@ -1,4 +1,6 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { NgForm } from '@angular/forms';
+
 import { POST } from 'src/app/models';
 
 @Component({
@@ -8,25 +10,29 @@ import { POST } from 'src/app/models';
 })
 export class PostCreateComponent implements OnInit {
 
+  @ViewChild('postForm') ngForm: NgForm;
   @Output() onSavePost = new EventEmitter<POST>();
-  newTitle = '';
-  newContent = '';
 
   constructor() { }
 
   ngOnInit() {
+    this.initialize()
   }
 
   onAddPOst() {
-    this.newTitle = this.newTitle.trim();
-    this.newContent = this.newContent.trim();
-    if (this.newTitle.length > 3 && this.newContent.length > 0) {
-      this.onSavePost.emit({ title: this.newTitle, content: this.newContent });
+    if (this.ngForm.invalid) {  return  }
+    const newTitle = this.ngForm.value.title.trim();
+    const newContent = this.ngForm.value.content.trim();
+    if (newTitle.length > 3 && newContent.length > 0) {
+      this.onSavePost.emit({ title: newTitle, content: newContent });
     } else {
       this.onSavePost.emit(null);
     }
-    this.newTitle = '';
-    this.newContent = '';
+    this.initialize();
+  }
+
+  initialize() {
+    // this.ngForm.setValue({ title: '', content: '' });
   }
 }
  
