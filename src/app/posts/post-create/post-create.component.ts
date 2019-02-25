@@ -1,38 +1,28 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 import { POST } from 'src/app/models';
+import { PostService } from 'src/app/providers/post.service';
 
 @Component({
   selector: 'app-post-create',
   templateUrl: './post-create.component.html',
   styleUrls: ['./post-create.component.css']
 })
-export class PostCreateComponent implements OnInit {
+export class PostCreateComponent {
 
   @ViewChild('postForm') ngForm: NgForm;
-  @Output() onSavePost = new EventEmitter<POST>();
 
-  constructor() { }
-
-  ngOnInit() {
-    this.initialize()
-  }
+  constructor(private postService: PostService) { }
 
   onAddPOst() {
     if (this.ngForm.invalid) {  return  }
     const newTitle = this.ngForm.value.title.trim();
     const newContent = this.ngForm.value.content.trim();
     if (newTitle.length > 3 && newContent.length > 0) {
-      this.onSavePost.emit({ title: newTitle, content: newContent });
-    } else {
-      this.onSavePost.emit(null);
+      const post: POST = { title: newTitle, content: newContent };
+      this.postService.addPost(post);
     }
-    this.initialize();
-  }
-
-  initialize() {
-    // this.ngForm.setValue({ title: '', content: '' });
   }
 }
  
