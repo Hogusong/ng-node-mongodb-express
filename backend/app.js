@@ -1,8 +1,19 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const environment = require('./environments/environment')
+
 const POST = require('./models/post');
 
 const app = express();
+
+mongoose.connect(`mongodb+srv://${environment.name}:${environment.dbpass}@clustersudoku-i3wly.mongodb.net/node-ng?retryWrites=true`, { useNewUrlParser: true })
+  .then(() => {
+    console.log('connected to database!');
+  })
+  .catch(() => {
+    console.log('connection failed!')
+  });
 
 // Set middlewares
 app.use(bodyParser.json());
@@ -25,6 +36,7 @@ app.post('/api/post', (req, res, next) => {
     title: req.body.title,  content: req.body.content
   });
   console.log(post);
+  post.save();
   res.status(201).json({
     message: 'Post added successfully'
   });
