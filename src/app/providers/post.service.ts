@@ -29,10 +29,22 @@ export class PostService {
 
   addPost(post: POST) {
     this.http
-      .post<{ message: string }>('http://localhost:3000/api/post', post)
+      .post<{ message: string, id: string }>('http://localhost:3000/api/post', post)
       .subscribe(data => {
+        post.id = data.id;
         this.posts.push(post);
-        this.updatedPosts.next(this.posts);
+        this.updatedPosts.next([...this.posts]);
     });
+  }
+
+  deletePost(id: string, index: number) {
+    this.http
+      .delete('http://localhost:3000/api/posts/' + id)
+      .subscribe(res => {
+        if (res === true) {
+          this.posts.splice(index, 1);
+          this.updatedPosts.next([...this.posts]);
+        }
+      });
   }
 }
