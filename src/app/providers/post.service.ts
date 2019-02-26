@@ -31,7 +31,6 @@ export class PostService {
     this.http
       .post<{ message: string }>('http://localhost:3000/api/post', post)
       .subscribe(data => {
-        console.log(data.message);
         this.posts.push(post);
         this.updatedPosts.next(this.posts);
     });

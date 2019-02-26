@@ -43,9 +43,12 @@ app.post('/api/post', (req, res, next) => {
 
 app.get("/api/posts", (req, res, next) => {
   POST.find().then(documents => {
+    const posts = documents.map(doc => {
+      return { id: doc._id,  title: doc.title,  content: doc.content }
+    })
     res.status(200).json({
       message: 'Posts fetch successfully',
-      posts: documents
+      posts: posts
     });
   });
 });
