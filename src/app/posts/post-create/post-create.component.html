@@ -2,7 +2,7 @@
   <form #postForm="ngForm" (submit)="onSavePost(postForm)">
     <mat-form-field>
       <input matInput type="text" name="title" 
-                      [ngModel]="post.title"
+                      [ngModel]="post?.title"
                       required minlength="3"
                       placeholder="Post Title"
                       #title="ngModel">
