@@ -23,18 +23,34 @@ export class PostService {
     });
   }
 
+  getPostById(postId: string) {
+    return this.http.get<POST>('http://localhost:3000/api/posts/' + postId)
+  }
+
   getUpdatedPosts() {
     return this.updatedPosts.asObservable();
   }
 
   addPost(post: POST) {
     this.http
-      .post<{ message: string, id: string }>('http://localhost:3000/api/post', post)
+      .post<{ message: string, id: string }>('http://localhost:3000/api/posts/add', post)
       .subscribe(data => {
         post.id = data.id;
         this.posts.push(post);
         this.updatedPosts.next([...this.posts]);
     });
+  }
+
+  updatePost(post: POST) {
+    this.http
+      .put('http://localhost:3000/api/posts/update', post)
+      .subscribe(res => {
+        const index = this.posts.findIndex(p => p.id === post.id );
+        if (index > -1) {
+          this.posts[index] = post;
+          this.updatedPosts.next([...this.posts]);
+        }    
+      });
   }
 
   deletePost(id: string, index: number) {
