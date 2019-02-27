@@ -1,4 +1,63 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+
+import { POST } from 'src/app/models';
+import { PostService } from 'src/app/providers/post.service';
+import { ActivatedRoute, Router } from '@angular/router';
+
+@Component({
+  selector: 'app-post-create',
+  templateUrl: './post-create.component.html',
+  styleUrls: ['./post-create.component.css']
+})
+export class PostCreateComponent implements OnInit {
+
+  form: FormGroup;
+  imagePreview: any;
+  postId: string;
+  post: POST = { title: '', content: '' };
+
+  constructor(private postService: PostService,
+              private activatedRoute: ActivatedRoute,
+              private router: Router) { }
+
+  ngOnInit() {
+    this.form = new FormGroup({
+      title: new FormControl(null,
+        { validators: [Validators.required, Validators.minLength(3)]}),
+      content: new FormControl(null,  { validators: [Validators.required]}),
+      image: new FormControl(null,  { validators: [Validators.required]})
+    });
+
+    this.postId = this.activatedRoute.snapshot.params['postId'];
+    if (this.postId) {
+      this.postService.getPostById(this.postId).subscribe(res => {
+        this.post = res;
+        this.form.setValue({ title: this.post.title,  content: this.post.content });
+      });
+    } 
+  }
+
+  onSavePost() {
+    if (this.form.invalid) {  return  }
+    const newTitle = this.form.value.title.trim();
+    const newContent = this.form.value.content.trim();
+    if (newTitle.length > 2 && newContent.length > 0) {
+      const post: POST = { title: newTitle, content: newContent };
+      if (!this.postId) {
+        this.postService.addPost(post);
+      } else {
+        post.id = this.postId;
+        this.postService.updatePost(post);
+      }
+    }
+    this.form.reset();
+    this.router.navigate(['/']);
+  }
+}
+
+/*  used FormModule(NgForm)
+import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 import { POST } from 'src/app/models';
@@ -42,4 +101,4 @@ export class PostCreateComponent implements OnInit {
     this.router.navigate(['/']);
   }
 }
- 
+*/

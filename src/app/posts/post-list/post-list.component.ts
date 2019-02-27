@@ -28,7 +28,7 @@ export class PostListComponent implements OnInit, OnDestroy {
           this.posts = res;
         });
       this.isLoading = false;
-    }, 2000);
+    }, 1000);
   }
 
   onDelete(id: string, index: number) {

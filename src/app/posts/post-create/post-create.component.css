@@ -5,3 +5,8 @@ mat-form-field, textarea {
 button {
   margin-right: 30px;
 }
+
+/* input[type="file"] {
+  visibility: hidden;
+} */
+
