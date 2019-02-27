@@ -10,3 +10,7 @@
 button i {
   margin-right: 5px;
 }
+
+mat-spinner {
+  margin: auto;
+}
