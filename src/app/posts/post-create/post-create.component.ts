@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { POST } from 'src/app/models';
 import { PostService } from 'src/app/providers/post.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { mimeType } from './mine-type.validator';
 
 @Component({
   selector: 'app-post-create',
@@ -26,7 +27,9 @@ export class PostCreateComponent implements OnInit {
       title: new FormControl(null,
         { validators: [Validators.required, Validators.minLength(3)]}),
       content: new FormControl(null,  { validators: [Validators.required]}),
-      image: new FormControl(null,  { validators: [Validators.required]})
+      image: new FormControl(null,
+        { validators: [Validators.required],
+          asyncValidators: [mimeType]})
     });
 
     this.postId = this.activatedRoute.snapshot.params['postId'];
