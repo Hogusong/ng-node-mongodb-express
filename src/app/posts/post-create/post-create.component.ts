@@ -59,7 +59,7 @@ export class PostCreateComponent implements OnInit {
     if (newTitle.length > 2 && newContent.length > 0) {
       const post: POST = { title: newTitle, content: newContent };
       if (!this.postId) {
-        this.postService.addPost(post);
+        this.postService.addPost(post, this.form.value.image);
       } else {
         post.id = this.postId;
         this.postService.updatePost(post);
