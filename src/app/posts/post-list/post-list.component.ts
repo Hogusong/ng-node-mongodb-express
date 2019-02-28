@@ -15,7 +15,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   
   isLoading = false;
   posts: POST[] = []
-  totalPost = 3;
+  totalPosts = 0;
   currPage = 1;
   postPerPage = 2;
   pageSizeOptions = [1, 2, 5, 10, 20, 40]
@@ -29,8 +29,9 @@ export class PostListComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.postService.getPostsFromServer(this.postPerPage, this.currPage)
       this.postsSubscription = this.postService.getUpdatedPosts()
-        .subscribe((res: POST[]) => {
-          this.posts = res;
+        .subscribe((res: any) => {
+          this.posts = res.posts;
+          this.totalPosts = res.count;
         });
       this.isLoading = false;
     }, 1000);

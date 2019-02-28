@@ -43,18 +43,23 @@ router.post('/api/posts/add', multer({ storage: storage }).single('image'), (req
 router.get("/api/posts", (req, res, next) => {
   const pageSize = +req.query.pageSize;
   const currentPage = +req.query.page;
+  let fetchedPosts;
   const postQuery = POST.find();
+
   if (pageSize * currentPage > 0) {
     postQuery.skip(pageSize * (currentPage - 1))
              .limit(pageSize);
   }
   postQuery.then(documents => {
-    const posts = documents.map(doc => {
+    fetchedPosts = documents.map(doc => {
       return { id: doc._id,  title: doc.title,  content: doc.content, imagePath: doc.imagePath }
     })
+    return POST.count();
+  }).then(count =>{
     res.status(200).json({
       message: 'Posts fetch successfully',
-      posts: posts
+      posts: fetchedPosts,
+      count: count
     });
   });
 });

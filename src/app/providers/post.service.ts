@@ -10,18 +10,20 @@ import { POST } from '../models';
 export class PostService {
 
   private posts: POST[] = [];
-  private updatedPosts = new Subject<POST[]>();
+  private updatedPosts = new Subject<any>();
+  private count: number;
 
   constructor(private http: HttpClient) { }
 
   getPostsFromServer(pageSize, page) {
     const queryParams = '?pageSize=' + pageSize + '&page=' + page
     this.http
-      .get<{message: string, posts: POST[]}>(
+      .get<{message: string, posts: POST[], count: number}>(
         'http://localhost:3000/api/posts' + queryParams)
       .subscribe((data) => {
         this.posts = data.posts;
-        this.updatedPosts.next([...this.posts]);
+        this.count = data.count;
+        this.updatedPosts.next({ posts: [...this.posts], count: this.count });
     });
   }
 
