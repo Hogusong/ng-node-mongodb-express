@@ -26,8 +26,11 @@ const POST = require('../models/post');
 
 // work with client
 router.post('/api/posts/add', multer({ storage: storage }).single('image'), (req, res, next) => {
+  const url = req.protocol + '://' + req.get('host');
   const post = new POST({
-    title: req.body.title,  content: req.body.content
+    title: req.body.title,
+    content: req.body.content,
+    imagePath: url + '/images/' + req.file.filename
   });
   post.save().then(result => {
     res.status(201).json({
@@ -40,7 +43,7 @@ router.post('/api/posts/add', multer({ storage: storage }).single('image'), (req
 router.get("/api/posts", (req, res, next) => {
   POST.find().then(documents => {
     const posts = documents.map(doc => {
-      return { id: doc._id,  title: doc.title,  content: doc.content }
+      return { id: doc._id,  title: doc.title,  content: doc.content, imagePath: doc.imagePath }
     })
     res.status(200).json({
       message: 'Posts fetch successfully',
@@ -51,7 +54,6 @@ router.get("/api/posts", (req, res, next) => {
 
 router.get('/api/posts/:id', (req, res, next) => {
   POST.findById(req.params.id).then(data => {
-    console.log(data);
     res.status(200).json(data);
   })
 });
@@ -70,4 +72,3 @@ router.put("/api/posts/update", (req, res, next) => {
 })
 
 module.exports = router;
-

@@ -5,6 +5,7 @@
     <mat-expansion-panel-header>
       {{ post.title }}
     </mat-expansion-panel-header>
+    <img [src]="post.imagePath" [alt]="post.title">
     <p>{{ post.content }}</p>
     <mat-action-row>
       <!-- <button mat-button color="primary" (click)="onEdit(post.id)"> -->
