@@ -41,7 +41,14 @@ router.post('/api/posts/add', multer({ storage: storage }).single('image'), (req
 });
 
 router.get("/api/posts", (req, res, next) => {
-  POST.find().then(documents => {
+  const pageSize = +req.query.pageSize;
+  const currentPage = +req.query.page;
+  const postQuery = POST.find();
+  if (pageSize * currentPage > 0) {
+    postQuery.skip(pageSize * (currentPage - 1))
+             .limit(pageSize);
+  }
+  postQuery.then(documents => {
     const posts = documents.map(doc => {
       return { id: doc._id,  title: doc.title,  content: doc.content, imagePath: doc.imagePath }
     })
