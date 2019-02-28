@@ -48,9 +48,19 @@ export class PostService {
     });
   }
 
-  updatePost(post: POST) {
+  updatePost(post: POST, image: File | string) {
+    let postData : POST | FormData;
+    if (typeof image === 'object') {
+      postData = new FormData();
+      postData.append('id', post.id);
+      postData.append('title', post.title);
+      postData.append('content', post.content);
+      postData.append('image', image, post.title);
+    } else {
+      postData = post;
+    }
     this.http
-      .put('http://localhost:3000/api/posts/update', post)
+      .put('http://localhost:3000/api/posts/update', postData)
       .subscribe(res => {
         const index = this.posts.findIndex(p => p.id === post.id );
         if (index > -1) {
