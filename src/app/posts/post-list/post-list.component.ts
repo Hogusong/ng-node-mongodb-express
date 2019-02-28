@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 
 import { POST } from 'src/app/models';
 import { Router } from '@angular/router';
+import { PageEvent } from '@angular/material';
 
 @Component({
   selector: 'app-post-list',
@@ -14,6 +15,9 @@ export class PostListComponent implements OnInit, OnDestroy {
   
   isLoading = false;
   posts: POST[] = []
+  totalPost = 20;
+  postPerPage = 2;
+  pageSizeOptions = [2, 5, 10, 20, 40]
   private postsSubscription: Subscription;
 
   constructor(private postService: PostService,
@@ -37,6 +41,10 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   onEdit(postId: string) {
     this.router.navigate(['edit', postId]);
+  }
+
+  onChangePage(pageData: PageEvent) {
+    console.log(pageData);
   }
 
   ngOnDestroy() {

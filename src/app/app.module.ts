@@ -7,7 +7,8 @@ import { MatInputModule,
          MatButtonModule,
          MatToolbarModule,
          MatExpansionModule,
-         MatProgressSpinnerModule } from '@angular/material';
+         MatProgressSpinnerModule, 
+         MatPaginatorModule} from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
@@ -35,6 +36,7 @@ import { AppRoutingModule } from './app-routing.module';
     MatToolbarModule,
     MatExpansionModule,
     MatProgressSpinnerModule,
+    MatPaginatorModule,
     AppRoutingModule
   ],
   providers: [],
