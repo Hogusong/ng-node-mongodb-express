@@ -29,12 +29,6 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.initialLoad();
   }
 
-  onDelete(id: string, index: number) {
-    this.postService.deletePost(id).subscribe(res => {
-      this.initialLoad();
-    });
-  }
-
   initialLoad() {
     setTimeout(() => {
       this.postService.getPostsFromServer(this.postPerPage, this.currPage)
@@ -51,6 +45,12 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.router.navigate(['edit', postId]);
   }
 
+  onDelete(id: string) {
+    this.postService.deletePost(id).subscribe(res => {
+      this.initialLoad();
+    });
+  }
+  
   onChangePage(pageData: PageEvent) {
     this.currPage = pageData.pageIndex + 1;
     this.postPerPage = pageData.pageSize;
