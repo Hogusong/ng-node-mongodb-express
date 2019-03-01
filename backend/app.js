@@ -9,6 +9,7 @@ const userRoutes = require('./routes/user');
 
 const app = express();
 
+mongoose.set('useCreateIndex', true);
 mongoose.connect(`mongodb+srv://${environment.name}:${environment.dbpass}@clustersudoku-i3wly.mongodb.net/node-ng?retryWrites=true`, { useNewUrlParser: true })
   .then(() => {
     console.log('connected to database!');

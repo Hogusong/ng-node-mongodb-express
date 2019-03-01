@@ -1,5 +1,5 @@
 <mat-card>
-  <form #loginForm="ngForm" (submit)="onLogin()">
+  <form #loginForm="ngForm" (submit)="onLogin(loginForm)">
     <mat-form-field>
       <input matInput type="email" name="email" 
                       ngModel required email

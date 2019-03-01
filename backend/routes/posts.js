@@ -54,7 +54,7 @@ router.get("/api/posts", (req, res, next) => {
     fetchedPosts = documents.map(doc => {
       return { id: doc._id,  title: doc.title,  content: doc.content, imagePath: doc.imagePath }
     })
-    return POST.count();
+    return POST.countDocuments();
   }).then(count =>{
     res.status(200).json({
       message: 'Posts fetch successfully',

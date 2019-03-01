@@ -18,4 +18,12 @@ export class AuthService {
         console.log('result:', res);
       })
   }
+
+  login(email, password) {
+    const newUser: AUTH = { email: email, password: password }; 
+    this.http.post('http://localhost:3000/api/login', newUser)
+      .subscribe(res => {
+        console.log('result:', res);
+      })
+  }
 }

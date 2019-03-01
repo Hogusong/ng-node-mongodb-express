@@ -1,7 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from 'src/app/providers/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -10,22 +11,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
-  @ViewChild('loginForm') loginForm: NgForm;
-
-  constructor(private activatedRoute: ActivatedRoute,
+  constructor(private authService: AuthService,
+              private activatedRoute: ActivatedRoute,
               private router: Router) { }
 
-  ngOnInit() {
-    setTimeout(() => {
-      this.loginForm.setValue({
-        email: 'narvar@gmail.com', password: '1234'
-      })  
-    }, 300)
-  }
+  ngOnInit() { }
 
-  onLogin() {
-    if (this.loginForm.invalid) {  return  }
-    console.log(this.loginForm.value)
+  onLogin(form:  NgForm) {
+    if (form.invalid) {  return  }
+    this.authService.login(form.value.email, form.value.password)
     this.router.navigate(['/']);
   }
 }
