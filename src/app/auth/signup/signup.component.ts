@@ -17,7 +17,7 @@ export class SignupComponent implements OnInit {
   ngOnInit() {
     setTimeout(() => {
       this.signupForm.setValue({
-        email: 'narvar@gmail.com', password: '1234'
+        email: '', password: ''
       })  
     }, 300)
   }

@@ -2,9 +2,10 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const environment = require('./environments/environment')
+const environment = require('./environments/environment');
 
-const postsRoutes = require('./routes/posts')
+const postsRoutes = require('./routes/posts');
+const userRoutes = require('./routes/user');
 
 const app = express();
 
@@ -33,5 +34,6 @@ app.use((req, res, next) => {
 });
 
 app.use(postsRoutes);
+app.use(userRoutes);
 
 module.exports = app;
