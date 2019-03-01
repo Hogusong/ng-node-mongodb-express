@@ -26,6 +26,16 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.isLoading = true;
+    this.initialLoad();
+  }
+
+  onDelete(id: string, index: number) {
+    this.postService.deletePost(id).subscribe(res => {
+      this.initialLoad();
+    });
+  }
+
+  initialLoad() {
     setTimeout(() => {
       this.postService.getPostsFromServer(this.postPerPage, this.currPage)
       this.postsSubscription = this.postService.getUpdatedPosts()
@@ -34,11 +44,7 @@ export class PostListComponent implements OnInit, OnDestroy {
           this.totalPosts = res.count;
         });
       this.isLoading = false;
-    }, 1000);
-  }
-
-  onDelete(id: string, index: number) {
-    this.postService.deletePost(id, index);
+    }, 500);
   }
 
   onEdit(postId: string) {

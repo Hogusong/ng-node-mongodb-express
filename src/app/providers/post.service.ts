@@ -48,7 +48,7 @@ export class PostService {
       .subscribe(data => {
         post.id = data.id;
         this.posts.push(post);
-        this.updatedPosts.next([...this.posts]);
+        this.updatedPosts.next({ posts: [...this.posts], count: ++this.count });
     });
   }
 
@@ -69,19 +69,12 @@ export class PostService {
         const index = this.posts.findIndex(p => p.id === post.id );
         if (index > -1) {
           this.posts[index] = post;
-          this.updatedPosts.next([...this.posts]);
+          this.updatedPosts.next({ posts: [...this.posts], count: this.count });
         }    
       });
   }
 
-  deletePost(id: string, index: number) {
-    this.http
-      .delete('http://localhost:3000/api/posts/' + id)
-      .subscribe(res => {
-        if (res === true) {
-          this.posts.splice(index, 1);
-          this.updatedPosts.next([...this.posts]);
-        }
-      });
+  deletePost(id: string) {
+    return this.http.delete('http://localhost:3000/api/posts/' + id);
   }
 }
