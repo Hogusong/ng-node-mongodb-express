@@ -1,5 +1,5 @@
 <mat-card>
-  <form #signupForm="ngForm" (submit)="onSignup()">
+  <form #signupForm="ngForm" (submit)="onSignup(signupForm)">
     <mat-form-field>
       <input matInput type="email" name="email" 
                       ngModel required email

@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from 'src/app/providers/auth.service';
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
@@ -11,7 +12,8 @@ export class SignupComponent implements OnInit {
 
   @ViewChild('signupForm') signupForm: NgForm;
 
-  constructor(private activatedRoute: ActivatedRoute,
+  constructor(private authService: AuthService,
+              private activatedRoute: ActivatedRoute,
               private router: Router) { }
 
   ngOnInit() {
@@ -22,9 +24,9 @@ export class SignupComponent implements OnInit {
     }, 300)
   }
 
-  onSignup() {
-    if (this.signupForm.invalid) {  return  }
-    console.log(this.signupForm.value)
+  onSignup(form: NgForm) {
+    if (form.invalid) {  return  }
+    this.authService.addUser(form.value.email, form.value.password);
     this.router.navigate(['/']);
   }
 }
