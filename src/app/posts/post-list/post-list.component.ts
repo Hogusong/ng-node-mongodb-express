@@ -32,6 +32,7 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.isLoading = true;
+    this.authStatus = this.authService.getAuthStatus();
     this.authSubscription = this.authService.getAuthSubject()
       .subscribe(status => this.authStatus = status)
     this.initialLoad();
