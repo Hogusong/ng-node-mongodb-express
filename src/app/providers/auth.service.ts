@@ -10,11 +10,16 @@ import { AUTH } from '../models';
 export class AuthService {
 
   private token: string;
+  private authSubject = new Subject<boolean>();
 
   constructor(private http: HttpClient) { }
 
   getToken() {
     return this.token;
+  }
+
+  getAuthSubject() {
+    return this.authSubject.asObservable();
   }
 
   addUser(email, password) {
@@ -28,6 +33,14 @@ export class AuthService {
   login(email, password) {
     const newUser: AUTH = { email: email, password: password }; 
     this.http.post<string>('http://localhost:3000/api/login', newUser)
-      .subscribe(res => this.token = res);
+      .subscribe(res => {
+        this.token = res;
+        this.authSubject.next(true);
+      });
+  }
+
+  logout() {
+    this.authSubject.next(false);
+    this.token = null;
   }
 }
