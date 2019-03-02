@@ -3,6 +3,7 @@ import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 import { POST } from '../models';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class PostService {
   private updatedPosts = new Subject<any>();
   private count: number;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+              private authService: AuthService) { }
 
   getPostsFromServer(pageSize, page) {
     const queryParams = '?pageSize=' + pageSize + '&page=' + page

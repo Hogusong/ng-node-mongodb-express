@@ -9,6 +9,9 @@ const MIME_TYPE_MAP = {
   'image/jpg': 'jpg'
 }
 
+const POST = require('../models/post');
+const checkAuth = require('../middleware/check-auth');
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const isValid = MIME_TYPE_MAP[file.mimetype];
@@ -22,22 +25,22 @@ const storage = multer.diskStorage({
   }
 });
 
-const POST = require('../models/post');
-
 // work with client
-router.post('/api/posts/add', multer({ storage: storage }).single('image'), (req, res, next) => {
-  const url = req.protocol + '://' + req.get('host');
-  const post = new POST({
-    title: req.body.title,
-    content: req.body.content,
-    imagePath: url + '/images/' + req.file.filename
-  });
-  post.save().then(result => {
-    res.status(201).json({
-      message: 'Post added successfully',
-      id: result._id
+router.post('/api/posts/add', checkAuth,
+  multer({ storage: storage }).single('image'),
+  (req, res, next) => {
+    const url = req.protocol + '://' + req.get('host');
+    const post = new POST({
+      title: req.body.title,
+      content: req.body.content,
+      imagePath: url + '/images/' + req.file.filename
     });
-  });
+    post.save().then(result => {
+      res.status(201).json({
+        message: 'Post added successfully',
+        id: result._id
+      });
+    });
 });
 
 router.get("/api/posts", (req, res, next) => {
@@ -70,27 +73,29 @@ router.get('/api/posts/:id', (req, res, next) => {
   })
 });
 
-router.delete('/api/posts/:id', (req, res, next) => {
+router.delete('/api/posts/:id', checkAuth, (req, res, next) => {
   POST.deleteOne({ _id: req.params.id }).then(result => {
     res.status(200).json(true)
   });
 });
 
-router.put("/api/posts/update", multer({ storage: storage }).single('image'), (req, res, next) => {
-  let imagePath = req.body.imagePath;
-  if (req.file) {
-    const url = req.protocol + '://' + req.get('host');
-    imagePath = url + '/images/' + req.file.filename;
-  }
-  const post = new POST({
-    _id: req.body.id,
-    title: req.body.title,
-    content: req.body.content,
-    imagePath: imagePath
-  });
-  POST.updateOne({ _id: post._id }, post).then(result => {
-    res.status(200).json(true);
-  })
-})
+router.put("/api/posts/update", checkAuth,
+  multer({ storage: storage }).single('image'),
+  (req, res, next) => {
+    let imagePath = req.body.imagePath;
+    if (req.file) {
+      const url = req.protocol + '://' + req.get('host');
+      imagePath = url + '/images/' + req.file.filename;
+    }
+    const post = new POST({
+      _id: req.body.id,
+      title: req.body.title,
+      content: req.body.content,
+      imagePath: imagePath
+    });
+    POST.updateOne({ _id: post._id }, post).then(result => {
+      res.status(200).json(true);
+    });
+});
 
 module.exports = router;

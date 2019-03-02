@@ -41,9 +41,7 @@ router.post('/api/login', (req, res, next) => {
       'my_secret_code_is_secret',
       { expiresIn: "1h" }
     );
-    res.status(200).json({
-      token: token
-    })
+    res.status(200).json(token);
   })
   .catch(err => {
     return res.status(401).json({ message: 'Auth failed.'});
