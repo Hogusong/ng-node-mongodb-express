@@ -55,7 +55,6 @@ export class AuthService {
     const authInformation = this.getAuthData();
     const expiresIn = authInformation.expirationDate.getTime() - (new Date()).getTime();
     if (expiresIn > 0) {
-      console.log('here I am', expiresIn)
       this.token = authInformation.token;
       this.authSubject.next(this.authStatus = true);
       this.setAuthTimer(expiresIn);
