@@ -11,6 +11,7 @@ export class AuthService {
 
   private token: string;
   private authSubject = new Subject<boolean>();
+  tokenTimer: any;
 
   constructor(private http: HttpClient) { }
 
@@ -32,15 +33,22 @@ export class AuthService {
 
   login(email, password) {
     const newUser: AUTH = { email: email, password: password }; 
-    this.http.post<string>('http://localhost:3000/api/login', newUser)
+    this.http.post<{token:string, expiresIn: number}>('http://localhost:3000/api/login', newUser)
       .subscribe(res => {
-        this.token = res;
-        this.authSubject.next(true);
+        this.token = res.token;
+        const expiresIn = res.expiresIn * 1000;
+        if (this.token) {
+          this.authSubject.next(true);
+          this.tokenTimer = setTimeout(() => {
+            this.logout();
+          }, expiresIn);
+        }
       });
   }
 
   logout() {
     this.authSubject.next(false);
     this.token = null;
+    clearTimeout(this.tokenTimer);
   }
 }
