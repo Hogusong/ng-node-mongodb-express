@@ -37,7 +37,7 @@ export class AuthService {
   }
 
   login(email, password) {
-    const newUser: AUTH = { email: email, password: password }; 
+    const newUser: AUTH = { email: email, password: password };
     this.http.post<{token:string, expiresIn: number, userId: string}>('http://localhost:3000/api/login', newUser)
       .subscribe(res => {
         this.token = res.token;
