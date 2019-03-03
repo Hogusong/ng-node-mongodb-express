@@ -14,6 +14,9 @@
                       placeholder="Password here">
       <mat-error *ngIf="password.invalid">Password is not valid</mat-error>
     </mat-form-field>
-    <button mat-raised-button color="accent" type="submit">Signup</button>
+    <div>
+      <button mat-raised-button color="accent" type="submit">Signup</button>
+      <p *ngIf='message'>{{ message }}</p>
+    </div>
   </form>
 </mat-card>

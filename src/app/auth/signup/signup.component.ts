@@ -11,6 +11,7 @@ import { AuthService } from 'src/app/providers/auth.service';
 export class SignupComponent implements OnInit {
 
   @ViewChild('signupForm') signupForm: NgForm;
+  message = '';
 
   constructor(private authService: AuthService,
               private activatedRoute: ActivatedRoute,
@@ -26,7 +27,11 @@ export class SignupComponent implements OnInit {
 
   onSignup(form: NgForm) {
     if (form.invalid) {  return  }
-    this.authService.addUser(form.value.email, form.value.password);
-    this.router.navigate(['/']);
+    this.authService.signup(form.value.email, form.value.password)
+    .subscribe(res => {
+      this.message = 'Signup successful. Login now to start.';
+    }, error => {
+      this.message = error.error.error;
+    });
   }
 }

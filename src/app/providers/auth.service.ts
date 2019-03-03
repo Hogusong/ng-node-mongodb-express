@@ -28,12 +28,9 @@ export class AuthService {
     return this.authSubject.asObservable();
   }
 
-  addUser(email, password) {
+  signup(email, password) {
     const newUser: AUTH = { email: email, password: password }; 
-    this.http.post('http://localhost:3000/api/signup', newUser)
-      .subscribe(res => {
-        console.log('result:', res);
-      })
+    return this.http.post('http://localhost:3000/api/signup', newUser)
   }
 
   login(email, password) {
