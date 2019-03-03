@@ -31,7 +31,7 @@ export class SignupComponent implements OnInit {
     .subscribe(res => {
       this.message = 'Signup successful. Login now to start.';
     }, error => {
-      this.message = error.error.error;
+      this.message = error.error.message;
     });
   }
 }

@@ -15,6 +15,7 @@
       <mat-error *ngIf="password.invalid">Password is not valid</mat-error>
     </mat-form-field>
     <button mat-raised-button color="accent" type="submit">Login</button>
+    <p *ngIf="message">{{ message }}</p>
   </form>
 </mat-card>
   

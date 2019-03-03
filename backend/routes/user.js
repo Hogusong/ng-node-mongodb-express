@@ -18,7 +18,7 @@ router.post('/api/signup', (req, res, next) => {
       });
     })
     .catch(err => {
-      res.status(500).json({ error: 'Email is not valid. Try another.' });
+      res.status(500).json({ message: 'Email is not valid. Try another.' });
     });
   });
 });
@@ -28,13 +28,13 @@ router.post('/api/login', (req, res, next) => {
   USER.findOne({ email: req.body.email }).then(data => {
     user = data;
     if (!user) {
-      return res.status(401).json({ message: 'Auth failed.'});
+      return res.status(401).json({ message: 'Email is not valid. Try another.' });
     }
     return bcrypt.compare(req.body.password, user.password);
   })
   .then(result => {
     if (!result) {
-      return res.status(401).json({ message: 'Auth failed.'});
+      return res.status(401).json({ message: 'Password is not matched. Try another.'});
     }
     const token = jwt.sign(
       { email: user.email, userId: user._id },
@@ -46,7 +46,7 @@ router.post('/api/login', (req, res, next) => {
     });
   })
   .catch(err => {
-    return res.status(401).json({ message: 'Auth failed.'});
+    return res.status(401).json({ message: 'Not found user. Try another.'});
   })
 })
 

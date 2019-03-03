@@ -11,6 +11,7 @@ export class AuthService {
 
   private token: string;
   private authSubject = new Subject<boolean>();
+  private loginSubject = new Subject<any>();
   authStatus = false;
   tokenTimer: any;
 
@@ -28,6 +29,10 @@ export class AuthService {
     return this.authSubject.asObservable();
   }
 
+  getLoginSubject() {
+    return this.loginSubject.asObservable();
+  }
+
   signup(email, password) {
     const newUser: AUTH = { email: email, password: password }; 
     return this.http.post('http://localhost:3000/api/signup', newUser)
@@ -41,10 +46,13 @@ export class AuthService {
         const expiresIn = res.expiresIn * 1000;
         if (this.token) {
           this.authSubject.next(this.authStatus = true);
+          this.loginSubject.next('')
           const expiration = (new Date()).getTime() + expiresIn;
           this.saveAuthData(this.token, new Date(expiration), res.userId);
           this.setAuthTimer(expiresIn);
         }
+      }, error => {
+        this.loginSubject.next(error.error.message)
       });
   }
 
