@@ -56,7 +56,7 @@ router.get("/api/posts", (req, res, next) => {
   }
   postQuery.then(documents => {
     fetchedPosts = documents.map(doc => {
-      return { id: doc._id,  title: doc.title,  content: doc.content, imagePath: doc.imagePath }
+      return { id: doc._id,  title: doc.title,  content: doc.content, imagePath: doc.imagePath, creator: doc.creator }
     })
     return POST.countDocuments();
   }).then(count =>{
@@ -76,7 +76,11 @@ router.get('/api/posts/:id', (req, res, next) => {
 
 router.delete('/api/posts/:id', checkAuth, (req, res, next) => {
   POST.deleteOne({ _id: req.params.id, creator: req.userData.userId }).then(result => {
-    res.status(200).json({ message: 'Delete successful!'})
+    if (result.n > 0) {
+      res.status(200).json({ message: 'Deleted successfully!' });
+    } else {
+      res.status(401).json({ message: 'Not authorized!'})
+    }
   });
 });
 
@@ -97,7 +101,7 @@ router.put("/api/posts/update", checkAuth,
     });
     POST.updateOne({ _id: post._id, creator: req.userData.userId }, post).then(result => {
       if (result.nModified > 0) {
-        res.status(200).json({ message: 'Update successful!' });
+        res.status(200).json({ message: 'Updated successfully!' });
       } else {
         res.status(401).json({ message: 'Not authorized!'})
       }

@@ -38,14 +38,14 @@ export class AuthService {
 
   login(email, password) {
     const newUser: AUTH = { email: email, password: password }; 
-    this.http.post<{token:string, expiresIn: number}>('http://localhost:3000/api/login', newUser)
+    this.http.post<{token:string, expiresIn: number, userId: string}>('http://localhost:3000/api/login', newUser)
       .subscribe(res => {
         this.token = res.token;
         const expiresIn = res.expiresIn * 1000;
         if (this.token) {
           this.authSubject.next(this.authStatus = true);
           const expiration = (new Date()).getTime() + expiresIn;
-          this.saveAuthData(this.token, new Date(expiration));
+          this.saveAuthData(this.token, new Date(expiration), res.userId);
           this.setAuthTimer(expiresIn);
         }
       });
@@ -67,14 +67,16 @@ export class AuthService {
     }, duration);
   }
 
-  private saveAuthData(token: string, expirationDate: Date) {
+  private saveAuthData(token: string, expirationDate: Date, userId: string) {
     localStorage.setItem('token', token);
     localStorage.setItem('expiration', expirationDate.toISOString());
+    localStorage.setItem('userId', userId)
   }
 
   private clearAuthData() {
     localStorage.removeItem('token');
     localStorage.removeItem('expiration');
+    localStorage.removeItem('userId');
   }
 
   private getAuthData() {

@@ -15,6 +15,7 @@ import { AuthService } from 'src/app/providers/auth.service';
 export class PostListComponent implements OnInit, OnDestroy {
   
   isLoading = false;
+  userId: string;
   posts: POST[] = []
   totalPosts = 0;
   currPage = 1;
@@ -40,6 +41,7 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   initialLoad() {
     setTimeout(() => {
+      this.userId = localStorage.getItem('userId');
       this.postService.getPostsFromServer(this.postPerPage, this.currPage)
       this.postsSubscription = this.postService.getUpdatedPosts()
         .subscribe((res: any) => {

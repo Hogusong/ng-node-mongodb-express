@@ -42,7 +42,7 @@ router.post('/api/login', (req, res, next) => {
       { expiresIn: "1h" }
     );
     res.status(200).json({
-      token: token,  expiresIn: 3600
+      token: token,  expiresIn: 3600, userId: user._id
     });
   })
   .catch(err => {

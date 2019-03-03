@@ -7,7 +7,7 @@
     </mat-expansion-panel-header>
     <img [src]="post.imagePath" [alt]="post.title">
     <p>{{ post.content }}</p>
-    <mat-action-row *ngIf="authStatus">
+    <mat-action-row *ngIf="authStatus && userId === post.creator">
       <a mat-button color="primary" [routerLink]="['/edit', post.id]">
         <i class="fas fa-edit"></i>Edit
       </a>
