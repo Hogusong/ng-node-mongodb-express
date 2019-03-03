@@ -16,7 +16,7 @@ export class PostCreateComponent implements OnInit {
   form: FormGroup;
   imagePreview: any;
   postId: string;
-  post: POST = { title: '', content: '', imagePath: '' };
+  post: POST = { title: '', content: '', imagePath: '', creator: '' };
 
   constructor(private postService: PostService,
               private activatedRoute: ActivatedRoute,
@@ -42,7 +42,7 @@ export class PostCreateComponent implements OnInit {
           image: this.post.imagePath
         });
       });
-    } 
+    }
   }
 
   onImagePicked(event: Event) {
@@ -61,7 +61,11 @@ export class PostCreateComponent implements OnInit {
     const newTitle = this.form.value.title.trim();
     const newContent = this.form.value.content.trim();
     if (newTitle.length > 2 && newContent.length > 0) {
-      const post: POST = { title: newTitle, content: newContent, imagePath: this.form.value.image };
+      const post: POST = {
+        title: newTitle,
+        content: newContent,
+        imagePath: this.form.value.image,
+        creator: this.post.creator };
       if (!this.postId) {
         this.postService.addPost(post, this.form.value.image);
       } else {

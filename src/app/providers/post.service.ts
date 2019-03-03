@@ -43,12 +43,12 @@ export class PostService {
     postData.append('content', post.content);
     postData.append('image', image, post.title);
     this.http
-      .post<{ message: string, id: string }>(
+      .post<{ message: string, post: POST }>(
         'http://localhost:3000/api/posts/add',
         postData
       )
       .subscribe(data => {
-        post.id = data.id;
+        post = data.post;
         this.posts.push(post);
         this.updatedPosts.next({ posts: [...this.posts], count: ++this.count });
     });

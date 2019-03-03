@@ -39,7 +39,7 @@ router.post('/api/posts/add', checkAuth,
     post.save().then(result => {
       res.status(201).json({
         message: 'Post added successfully',
-        id: result._id
+        post: result
       });
     });
 });
@@ -75,8 +75,8 @@ router.get('/api/posts/:id', (req, res, next) => {
 });
 
 router.delete('/api/posts/:id', checkAuth, (req, res, next) => {
-  POST.deleteOne({ _id: req.params.id }).then(result => {
-    res.status(200).json(true)
+  POST.deleteOne({ _id: req.params.id, creator: req.userData.userId }).then(result => {
+    res.status(200).json({ message: 'Delete successful!'})
   });
 });
 
@@ -92,10 +92,15 @@ router.put("/api/posts/update", checkAuth,
       _id: req.body.id,
       title: req.body.title,
       content: req.body.content,
-      imagePath: imagePath
+      imagePath: imagePath,
+      creator: req.userData.userId
     });
-    POST.updateOne({ _id: post._id }, post).then(result => {
-      res.status(200).json(true);
+    POST.updateOne({ _id: post._id, creator: req.userData.userId }, post).then(result => {
+      if (result.nModified > 0) {
+        res.status(200).json({ message: 'Update successful!' });
+      } else {
+        res.status(401).json({ message: 'Not authorized!'})
+      }
     });
 });
 
