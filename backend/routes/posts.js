@@ -41,6 +41,9 @@ router.post('/api/posts/add', checkAuth,
         message: 'Post added successfully',
         post: result
       });
+    })
+    .catch(error => {
+      res.status(500).json({ message: 'Creating a post failed!' });
     });
 });
 
@@ -65,12 +68,18 @@ router.get("/api/posts", (req, res, next) => {
       posts: fetchedPosts,
       count: count
     });
+  })
+  .catch(error => {
+    res.status(500).json({ message: 'Fetching posts failed!' });
   });
 });
 
 router.get('/api/posts/:id', (req, res, next) => {
   POST.findById(req.params.id).then(data => {
     res.status(200).json(data);
+  })
+  .catch(error => {
+    res.status(500).json({ message: 'Post not found!' });
   })
 });
 
@@ -81,6 +90,9 @@ router.delete('/api/posts/:id', checkAuth, (req, res, next) => {
     } else {
       res.status(401).json({ message: 'Not authorized!'})
     }
+  })
+  .catch(error => {
+    res.status(500).json({ message: 'Couldn\'t delete post!' });
   });
 });
 
@@ -105,6 +117,9 @@ router.put("/api/posts/update", checkAuth,
       } else {
         res.status(401).json({ message: 'Not authorized!'})
       }
+    })
+    .catch(error => {
+      res.status(500).json({ message: 'Couldn\'t update post!' });
     });
 });
 
