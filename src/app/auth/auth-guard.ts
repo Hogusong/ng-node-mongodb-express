@@ -18,6 +18,6 @@ export class AuthGuard implements CanActivate{
     this.authStatus = this.authService.getAuthStatus();
     // this.authService.getAuthSubject().subscribe(status => this.authStatus = status)
     if (this.authStatus) {  return true;  }
-    this.router.navigate(['/login']);
+    this.router.navigate(['/auth/login']);
   }
 }
