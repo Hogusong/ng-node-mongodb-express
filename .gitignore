@@ -36,6 +36,9 @@ yarn-error.log
 testem.log
 /typings
 
+#configuration
+nodemon.json
+
 # System Files
 .DS_Store
 Thumbs.db

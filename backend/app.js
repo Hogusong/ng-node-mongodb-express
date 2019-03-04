@@ -2,15 +2,17 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const environment = require('./environments/environment');
 
 const postsRoutes = require('./routes/posts');
 const userRoutes = require('./routes/user');
 
 const app = express();
 
+const name = process.env.MONGO_USERNAME;
+const password = process.env.MONGO_ATLAS_PW;
+
 mongoose.set('useCreateIndex', true);
-mongoose.connect(`mongodb+srv://${environment.name}:${environment.dbpass}@clustersudoku-i3wly.mongodb.net/node-ng?retryWrites=true`, { useNewUrlParser: true })
+mongoose.connect(`mongodb+srv://${name}:${password}@clustersudoku-i3wly.mongodb.net/node-ng?retryWrites=true`, { useNewUrlParser: true })
   .then(() => {
     console.log('connected to database!');
   })

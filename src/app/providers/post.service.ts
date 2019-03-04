@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 import { POST } from '../models';
 import { AuthService } from './auth.service';
+
+const BACKEND_URL = environment.apiUrl + 'posts/';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +24,7 @@ export class PostService {
     const queryParams = '?pageSize=' + pageSize + '&page=' + page
     this.http
       .get<{message: string, posts: POST[], count: number}>(
-        'http://localhost:3000/api/posts' + queryParams)
+        BACKEND_URL + queryParams)
       .subscribe((data) => {
         this.posts = data.posts;
         this.count = data.count;
@@ -30,7 +33,7 @@ export class PostService {
   }
 
   getPostById(postId: string) {
-    return this.http.get<POST>('http://localhost:3000/api/posts/' + postId)
+    return this.http.get<POST>(BACKEND_URL + postId)
   }
 
   getUpdatedPosts() {
@@ -44,7 +47,7 @@ export class PostService {
     postData.append('image', image, post.title);
     this.http
       .post<{ message: string, post: POST }>(
-        'http://localhost:3000/api/posts/add',
+        BACKEND_URL + 'add',
         postData
       )
       .subscribe(data => {
@@ -66,7 +69,7 @@ export class PostService {
       postData = post;
     }
     this.http
-      .put('http://localhost:3000/api/posts/update', postData)
+      .put(BACKEND_URL + 'update', postData)
       .subscribe(res => {
         const index = this.posts.findIndex(p => p.id === post.id );
         if (index > -1) {
@@ -77,6 +80,6 @@ export class PostService {
   }
 
   deletePost(id: string) {
-    return this.http.delete('http://localhost:3000/api/posts/' + id);
+    return this.http.delete(BACKEND_URL + id);
   }
 }
