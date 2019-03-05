@@ -19,7 +19,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   posts: POST[] = []
   totalPosts = 0;
   currPage = 1;
-  postPerPage = 2;
+  postPerPage = 10;
   pageSizeOptions = [1, 2, 5, 10, 20, 40]
 
   authStatus = false;
